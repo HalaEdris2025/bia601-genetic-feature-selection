@@ -1,0 +1,80 @@
+private List<double[]> dataset = new List<double[]>();
+private const int FeatureCount = 5;
+protected void Page_Load(object sender, EventArgs e) { }
+
+protected void btnRun_Click(object sender, EventArgs e)
+{
+    try
+    {
+        string dataPath = Server.MapPath("housing.csv");
+
+        if (!File.Exists(dataPath))
+        {
+            lblResults.Text = "⚠️ لم يتم العثور على ملف البيانات (housing.csv)";
+            return;
+        }
+
+        dataset = LoadCsv(dataPath);
+        if (dataset.Count == 0)
+        {
+            lblResults.Text = "❌ الملف فارغ أو غير صالح.";
+            return;
+        }
+
+        int generations = int.Parse(txtGenerations.Text);
+        int populationSize = int.Parse(txtPopulation.Text);
+        double crossoverRate = double.Parse(txtCrossover.Text);
+        double mutationRate = double.Parse(txtMutation.Text);
+
+        lblResults.Text = "<h4>🚀 تشغيل الخوارزميات...</h4>";
+
+        double mseGA = RunGenetic(generations, populationSize, crossoverRate, mutationRate);
+        double mseLR = LinearRegression();
+        double mseLasso = LassoRegression(0.001);
+        double msePCA = PCARegression();
+
+        lblResults.Text += "<hr><h4>🏆 مقارنة الأداء (MSE):</h4>";
+        lblResults.Text += $"Genetic Algorithm = {mseGA:F4}<br>";
+        lblResults.Text += $"Linear Regression = {mseLR:F4}<br>";
+        lblResults.Text += $"Lasso Regression = {mseLasso:F4}<br>";
+        lblResults.Text += $"PCA Regression = {msePCA:F4}<br>";
+
+        double best = Math.Min(Math.Min(mseGA, mseLR), Math.Min(mseLasso, msePCA));
+        string bestName =
+            best == mseGA ? "الخوارزمية الجينية" :
+            best == mseLR ? "الانحدار الخطي" :
+            best == mseLasso ? "Lasso Regression" : "PCA Regression";
+
+        lblResults.Text += $"<br><b>🥇 النموذج الأفضل هو:</b> {bestName}<br>";
+    }
+    catch (Exception ex)
+    {
+        lblResults.Text = "❌ خطأ أثناء التنفيذ: " + ex.Message;
+    }
+}
+
+private List<double[]> LoadCsv(string path)
+{
+    var lines = File.ReadAllLines(path).Skip(1);
+    var data = new List<double[]>();
+
+    foreach (var line in lines)
+    {
+        var parts = line.Split(',');
+        if (parts.Length < 6) continue;
+
+        double[] row = new double[6];
+        bool valid = true;
+        for (int i = 0; i < 6; i++)
+        {
+            if (!double.TryParse(parts[i], out row[i]))
+            {
+                valid = false; break;
+            }
+        }
+
+        if (valid) data.Add(row);
+    }
+    return data;
+}
+
