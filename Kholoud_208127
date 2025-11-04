@@ -1,0 +1,21 @@
+<div class="form-section">
+   <div class="form-item">
+       <label for="txtGenerations">عدد الأجيال:</label>
+       <asp:TextBox ID="txtGenerations" runat="server" Text="100"></asp:TextBox>
+   </div>
+ 
+   <div class="form-item">
+       <label for="txtPopulation">حجم السكان:</label>
+       <asp:TextBox ID="txtPopulation" runat="server" Text="30"></asp:TextBox>
+   </div>
+ 
+   <div class="form-item">
+       <label for="txtCrossover">نسبة التزاوج (Crossover):</label>
+       <asp:TextBox ID="txtCrossover" runat="server" Text="0.7"></asp:TextBox>
+   </div>
+ 
+   <div class="form-item">
+       <label for="txtMutation">نسبة الطفرة (Mutation):</label>
+       <asp:TextBox ID="txtMutation" runat="server" Text="0.1"></asp:TextBox>
+   </div>
+</div>
