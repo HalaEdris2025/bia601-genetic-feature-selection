@@ -1,0 +1,14 @@
+<asp:Button
+   ID="btnRun"
+   runat="server"
+   CssClass="btn"
+   Text=" تشغيل المقارنة"
+   OnClick="btnRun_Click" />
+ 
+<hr class="divider" />
+<div class="results">
+   <h4> النتائج:</h4>
+   <asp:Label ID="lblResults" runat="server" Text="في انتظار تشغيل الخوارزميات..." />
+</div>
+<p class="note"> تم تطوير هذا المشروع لعرض مقارنة بين خوارزميات الذكاء الاصطناعي المختلفة.</p>
+git add .
