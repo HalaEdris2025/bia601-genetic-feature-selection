@@ -1,0 +1,51 @@
+private double LinearRegression()
+{
+    double[] w = new double[FeatureCount];
+    double lr = 0.0000001;
+    for (int e = 0; e < 1000; e++)
+    {
+        double[] grad = new double[FeatureCount];
+        foreach (var row in dataset)
+        {
+            double pred = 0;
+            for (int i = 0; i < FeatureCount; i++)
+                pred += row[i] * w[i];
+            double error = pred - row[5];
+            for (int i = 0; i < FeatureCount; i++)
+                grad[i] += row[i] * error;
+        }
+        for (int i = 0; i < FeatureCount; i++)
+            w[i] -= lr * grad[i] / dataset.Count;
+    }
+    return CalculateFitness(w);
+}
+
+private double LassoRegression(double lambda)
+{
+    double[] w = new double[FeatureCount];
+    double lr = 0.0000001;
+    for (int e = 0; e < 1000; e++)
+    {
+        double[] grad = new double[FeatureCount];
+        foreach (var row in dataset)
+        {
+            double pred = 0;
+            for (int i = 0; i < FeatureCount; i++)
+                pred += row[i] * w[i];
+            double error = pred - row[5];
+            for (int i = 0; i < FeatureCount; i++)
+                grad[i] += row[i] * error;
+        }
+        for (int i = 0; i < FeatureCount; i++)
+            w[i] -= lr * (grad[i] / dataset.Count + lambda * Math.Sign(w[i]));
+    }
+    return CalculateFitness(w);
+}
+
+private double PCARegression()
+{
+    double[] w = new double[FeatureCount];
+    for (int i = 0; i < FeatureCount; i++)
+        w[i] = 1.0 / FeatureCount;
+    return CalculateFitness(w);
+}

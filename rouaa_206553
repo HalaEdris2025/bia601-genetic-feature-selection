@@ -1,0 +1,58 @@
+
+private List<Individual> InitializePopulation(int size, int features, Random rand)
+{
+   var pop = new List<Individual>();
+   for (int i = 0; i < size; i++)
+   {
+       var ind = new Individual(features);
+       for (int j = 0; j < features; j++)
+           ind.Weights[j] = rand.NextDouble() * 2 - 1;
+       pop.Add(ind);
+   }
+   return pop;
+}
+ 
+private double CalculateFitness(double[] weights)
+{
+   double totalError = 0;
+   foreach (var row in dataset)
+   {
+       double predicted = 0;
+       for (int i = 0; i < FeatureCount; i++)
+           predicted += row[i] * weights[i];
+       double error = row[5] - predicted;
+       totalError += error * error;
+   }
+   return totalError / dataset.Count;
+}
+ 
+private Individual Crossover(Individual p1, Individual p2, Random rand)
+{
+   var child = new Individual(p1.Weights.Length);
+   int point = rand.Next(p1.Weights.Length);
+   for (int i = 0; i < p1.Weights.Length; i++)
+       child.Weights[i] = i < point ? p1.Weights[i] : p2.Weights[i];
+   return child;
+}
+ 
+private void Mutate(Individual ind, double rate, Random rand)
+{
+   for (int i = 0; i < ind.Weights.Length; i++)
+       if (rand.NextDouble() < rate)
+           ind.Weights[i] += (rand.NextDouble() * 2 - 1) * 0.1;
+}
+ 
+private Individual TournamentSelect(List<Individual> pop, Random rand)
+{
+   int t1 = rand.Next(pop.Count);
+   int t2 = rand.Next(pop.Count);
+   return pop[t1].Fitness < pop[t2].Fitness ? pop[t1] : pop[t2];
+}
+ 
+private Individual Clone(Individual original)
+{
+   var clone = new Individual(original.Weights.Length);
+   for (int i = 0; i < original.Weights.Length; i++)
+       clone.Weights[i] = original.Weights[i];
+   clone.Fitness = original.Fitness;
+   return clone;
