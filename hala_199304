@@ -76,5 +76,7 @@ private List<double[]> LoadCsv(string path)
         if (valid) data.Add(row);
     }
     return data;
-}
+
+
+
 
