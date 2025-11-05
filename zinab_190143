@@ -11,6 +11,12 @@
    <asp:Label ID="lblResults" runat="server" Text="في انتظار تشغيل الخوارزميات..." />
 </div>
 <p class="note"> تم تطوير هذا المشروع لعرض مقارنة بين خوارزميات الذكاء الاصطناعي المختلفة.</p>
+git init
 git add .
+git commit -m "Initial commit – project executes main functionality"
+git branch -M main
+git remote add origin https://github.com/HalaEdris2025/bia601-genetic-feature-selection.git
+git push -u origin main
+
 
 
